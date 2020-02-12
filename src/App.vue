@@ -1,28 +1,94 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="sandbox">
+    <v-navigation-drawer
+            :clipped="false"
+            app
+            overflow
+            v-model="primaryDrawer.model">
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            {{appName}}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list dense nav>
+
+        <v-list-item :key="item.title" link v-for="item in items">
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <router-link :to="item.link">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </router-link>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-divider />
+        <v-list-item>
+          <v-list-item-content>
+            Scheme
+          </v-list-item-content>
+          <v-switch
+                  label="Dark"
+                  primary
+                  @change="changeTheme"
+                  v-model="$vuetify.theme.dark"
+          />
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar :clipped-left="primaryDrawer.clipped" app>
+      <v-app-bar-nav-icon @click.stop="primaryDrawer.model = !primaryDrawer.model" v-if="primaryDrawer.type !== 'permanent'"/>
+      <v-toolbar-title>{{appName}}</v-toolbar-title>
+    </v-app-bar>
+
+    <v-content>
+      <v-container class="pa-4">
+        <router-view/>
+      </v-container>
+    </v-content>
+
+    <v-footer
+            :inset="false"
+            app
+    >
+      <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    data: () => ({
+      appName: "Administrace",
+      primaryDrawer: {
+        model: null,
+      },
+      items: [
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', link: "/" },
+        { title: 'Table', icon: 'mdi-file-table-box-multiple-outline ', link: "/api" },
+        { title: 'About', icon: 'mdi-help-box', link: "/about" },
+      ],
+    }),
+    created() {
+      if (this.$store.get("dark")) {
+        this.$vuetify.theme.dark = this.$store.get("dark");
+      }
+      else {
+        this.$store.set("dark", false);
+      }
+    },
+    methods: {
+      changeTheme() {
+        this.$store.set("dark", this.$vuetify.theme.dark);
+      }
+    }
   }
-}
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
