@@ -29,7 +29,7 @@
                                         prepend-icon="lock"
                                         type="password"
                                 />
-                                <v-card-text class="red--text">
+                                <v-card-text class="red--text" v-if="errorMessage">
                                     {{errorMessage}}
                                 </v-card-text>
                             </v-card-text>
@@ -61,10 +61,14 @@
                 e.preventDefault();
                 console.log("Zkouším se přihlásit jako: " + this.email);
                 try {
-                    const response = await HTTP.post("/auth/login", {email: this.email, password: this.password});
-                    console.log(response.data);
-                    this.$store.set("auth", response.data);
-                    this.$router.replace("/");
+                    const response = await HTTP.post("/admin/login", {email: this.email, password: this.password});
+                    this.$store.set("auth", JSON.stringify(response.data));
+                    if(this.$route.params.nextUrl != null){
+                        this.$router.push(this.$route.params.nextUrl)
+                    }
+                    else {
+                        this.$router.push('/')
+                    }
                 }
                 catch (e) {
                     console.log(e);

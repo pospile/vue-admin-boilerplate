@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            Api table
+            Poslední transakce v systému
             <v-spacer></v-spacer>
             <v-text-field
                     v-model="search"
@@ -12,58 +12,92 @@
         </v-card-title>
         <v-data-table
                 :headers="headers"
-                :items="desserts"
-                :items-per-page="5"
-                :search="search">
+                :items="transactions"
+                :items-per-page="10"
+                :search="search"
+                item-key="id"
+                :expanded="expanded"
+                @click:row="rowClicked">
+            <template v-slot:expanded-item="{ item }">
+                <td :colspan="headers.length">
+                    <v-btn color="primary" dark @click="dialog = !dialog">Historie {{item.id}}</v-btn>
+                </td>
+            </template>
         </v-data-table>
+
+        <v-row justify="center">
+            <v-dialog v-model="dialog" width="600px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Historie transakce</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-card class="mt-2">
+                            <v-card-text class="py-0">
+                                <v-timeline dense>
+                                        <v-timeline-item v-for="item in currentHistory" :key="item.id">
+                                            Transakce přesunuta ze stavu <b>{{item.status_before}}</b> do stavu <b>{{item.status_after}}</b>
+                                            <br>
+                                            Transakce přesunuta ze substavu <b>{{item.substate_before}}</b> do substavu <b>{{item.substate_after}}</b>
+                                            <br>
+                                            <span class="`headline font-weight-bold`"
+                                                  v-text="item.updated_at.split('.')[0]">
+                                            </span>
+                                            <v-spacer></v-spacer>
+                                            id: <b>{{item.id}}</b>
+                                        </v-timeline-item>
+                                </v-timeline>
+                            </v-card-text>
+                        </v-card>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" text @click="dialog = false">Zavřít</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+
     </v-card>
 </template>
 
 <script>
+    import {HTTP} from "../HTTP";
+
     export default {
         name: "ApiTable",
         data: () => ({
+            dialog: false,
+            expanded: [],
+            currentHistory: [],
             search: '',
             headers: [
-                {
-                    text: 'Dessert (100g serving)',
-                    align: 'left',
-                    sortable: false,
-                    value: 'name',
-                },
-                { text: 'Calories', value: 'calories' },
-                { text: 'Fat (g)', value: 'fat' },
-                { text: 'Carbs (g)', value: 'carbs' },
-                { text: 'Protein (g)', value: 'protein' },
-                { text: 'Iron (%)', value: 'iron' },
+                { value: "id", text: "id"},
+                { value: "email", text: "Email"},
+                { value: "status", text: "Stav"},
+                { value: "substate", text: "Substav"},
+                { value: "createdAt", text: "Vytvořena"},
+                { value: "updated_at", text: "Naposledy upraveno"},
+                { value: "user_id", text: "Uživatel #"},
             ],
-            desserts: [
-                {
-                    name: 'Frozen Yogurt',
-                    calories: 159,
-                    fat: 6.0,
-                    carbs: 24,
-                    protein: 4.0,
-                    iron: '1%',
-                },
-                {
-                    name: 'Ice cream sandwich',
-                    calories: 237,
-                    fat: 9.0,
-                    carbs: 37,
-                    protein: 4.3,
-                    iron: '1%',
-                },
-                {
-                    name: 'Eclair',
-                    calories: 262,
-                    fat: 16.0,
-                    carbs: 23,
-                    protein: 6.0,
-                    iron: '7%',
-                },
+            transactions: [
             ],
         }),
+        methods: {
+            rowClicked: function (value) {
+                this.expanded = value === this.expanded[0] ? [] : [value]
+                this.loadHistoryData(value.id);
+            },
+            loadHistoryData: async function (id) {
+                const response = await HTTP.get(`/admin/history/${id}`)
+                console.log(response.data);
+                this.currentHistory = response.data;
+            }
+        },
+        async mounted() {
+            const response = await HTTP.get("/admin/transactions");
+            this.transactions = response.data;
+        }
     }
 </script>
 

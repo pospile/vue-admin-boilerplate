@@ -1,5 +1,10 @@
 # admin
 
+## Prerequisites
+```
+npm install -g @vue/cli
+```
+
 ## Project setup
 ```
 yarn install

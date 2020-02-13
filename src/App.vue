@@ -32,7 +32,7 @@
         <v-divider />
         <v-list-item>
           <v-list-item-content>
-            Scheme
+            Tmavý režim
           </v-list-item-content>
           <v-switch
                   label="Dark"
@@ -73,8 +73,8 @@
       },
       items: [
         { title: 'Dashboard', icon: 'mdi-view-dashboard', link: "/" },
-        { title: 'Table', icon: 'mdi-file-table-box-multiple-outline ', link: "/api" },
-        { title: 'About', icon: 'mdi-help-box', link: "/about" },
+        { title: 'Transakce', icon: 'mdi-file-table-box-multiple-outline', link: "/transactions" },
+        { title: 'Administrátoři', icon: 'mdi-account-group', link: "/users" },
       ],
     }),
     created() {
