@@ -5,7 +5,7 @@
         <v-card>
           <v-list-item three-line>
             <v-list-item-content>
-              <div class="overline mb-4">Administrace CHLB</div>
+              <div class="overline mb-4">Administrace sazkovac</div>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -34,9 +34,9 @@
                 </template>
 
                 <v-list-item
-                        v-for="(admin, i) in admins"
-                        :key="i"
-                        link
+                    v-for="(admin, i) in admins"
+                    :key="i"
+                    link
                 >
                   <v-list-item-title v-text="admin[0]"></v-list-item-title>
                   <v-list-item-icon>
@@ -52,8 +52,8 @@
                   </v-list-item-content>
                 </template>
                 <v-list-item
-                        v-for="(crud, i) in cruds"
-                        :key="i"
+                    v-for="(crud, i) in cruds"
+                    :key="i"
                 >
                   <v-list-item-title v-text="crud[0]"></v-list-item-title>
                   <v-list-item-action>

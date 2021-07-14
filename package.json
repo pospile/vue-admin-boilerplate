@@ -53,11 +53,11 @@
   "vue": {
     "devServer": {
       "proxy": {
-        "^/api": {
+        "^/": {
           "target": "http://localhost:3001"
         }
       }
     },
-    "outputDir": "..\\box-be\\public"
+    "outputDir": "../sazkovac/public"
   }
 }
