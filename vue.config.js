@@ -3,9 +3,10 @@ module.exports = {
         "vuetify"
     ],
     "devServer": {
+        host: "0.0.0.0",
         proxy: {
             "^/": {
-                target: "https://be-2002f-3001.app.zerops.io",
+                target: "be",
                 changeOrigin: true
             }
         }
