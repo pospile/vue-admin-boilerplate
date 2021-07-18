@@ -16,13 +16,19 @@ HTTP.interceptors.request.use((config) => {
 	}
 });
 HTTP.interceptors.response.use((response) => {
-	if (response.status === 401) {
-		if (this.$router.currentRoute.path !== "/login") {
-			this.$router.push("/login");
+		console.log(response);
+		if (response.status === 401) {
+			console.log("Error 401");
+			if (this.$router.currentRoute.path !== "/login") {
+				this.$router.push("/login");
+			}
 		}
-	}
-	return response;
-});
+		return response;
+	},
+	(error) => {
+		console.log(error);
+		return error;
+	});
 
 export default {
 	getAuthorizationToken() {

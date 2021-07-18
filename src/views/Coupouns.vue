@@ -19,41 +19,29 @@
 				<template v-slot:item.createdAt="{ item }">
 					<span>{{ new Date(item.createdAt).toLocaleString() }}</span>
 				</template>
-				<template v-slot:item.wallet.money="{ item }">
-					<span>{{ item.wallet.money }} Kč</span>
+        <template v-slot:item.used="{ item }">
+          <v-icon v-if="item.used">mdi-check-all</v-icon>
+          <v-icon v-else>mdi-close</v-icon>
+        </template>
+				<template v-slot:item.couponValue="{ item }">
+					<span>{{ item.couponValue }} Kč</span>
 				</template>
 			</v-data-table>
 		</v-card>
 		<v-layout class="pt-2">
 			<v-dialog v-model="dialog" persistent max-width="800px">
 				<template v-slot:activator="{ on }">
-					<v-btn color="primary" dark v-on="on">Vytvořit nového uživatele</v-btn>
+					<v-btn color="primary" dark v-on="on">Vytvořit nový kupon</v-btn>
 				</template>
 				<v-card>
 					<v-card-title>
-						<span class="headline">Vytvoření uživatele</span>
+						<span class="headline">Vytvoření kuponu</span>
 					</v-card-title>
 					<v-card-text>
 						<v-container>
 							<v-row>
-								<v-col cols="12">
-									<v-text-field v-model="createUser.fullName" name="displayName" label="Celé jméno*"
-												  hint="Celé jméno uživatele"
-												  required></v-text-field>
-								</v-col>
-								<v-col cols="12">
-									<v-text-field v-model="createUser.phoneNumber" label="Telefonní číslo*"
-												  hint="Slouží jako přihlašovací jméno" required></v-text-field>
-								</v-col>
-								<v-col cols="12">
-									<v-text-field v-model="createUser.password" label="Heslo*"
-												  hint="Přihlašovací heslo uživatele"
-												  type="password"
-												  required></v-text-field>
-								</v-col>
 								<v-col cols="12" lg="4" md="4" sm="12">
-									<v-text-field v-model="createUser.initialBalance" type="number"
-												  label="Počáteční zůstatek"></v-text-field>
+									<v-text-field v-model="couponValue" type="number" label="Hodnota kupónu"></v-text-field>
 								</v-col>
 							</v-row>
 						</v-container>
@@ -62,7 +50,7 @@
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-						<v-btn color="blue darken-1" text @click="createNewUser">Save</v-btn>
+						<v-btn color="blue darken-1" text @click="createNewCoupon">Save</v-btn>
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
@@ -80,32 +68,28 @@ export default {
 		search: '',
 		headers: [
 			{
-				text: 'Jméno',
+				text: 'Kód kuponu',
 				align: 'left',
-				sortable: false,
-				value: 'fullName',
+				sortable: true,
+				value: 'couponCode',
 			},
-			{text: 'Datum založení', value: 'createdAt'},
-			{text: 'Telefonní číslo', value: 'phoneNumber'},
-			{text: 'Zůstatek', value: 'wallet.money'},
+			{text: 'Datum vytvoření', value: 'createdAt'},
+			{text: 'Použito', value: 'used'},
+      {text: 'Využil', value: 'usedBy.fullName'},
+			{text: 'Hodnota', value: 'couponValue'},
 		],
-		users: [],
-		createUser: {
-			phoneNumber: "",
-			fullName: "",
-			password: "",
-			initialBalance: ""
-		}
+		coupons: [],
+		couponValue: 0
 	}),
 	async mounted() {
-		const users = await HTTP.get("/user");
-		this.users = users.data;
-		console.log(this.users);
+		const coupons = await HTTP.get("/coupon");
+		this.coupons = coupons.data;
+		console.log(this.coupons);
 	},
 	methods: {
-		async createNewUser() {
+		async createNewCoupon() {
 			try {
-				const result = await HTTP.post("/user", this.createUser);
+				const result = await HTTP.post("/coupon", this.createUser);
 				this.users.push(result.data);
 				console.log(result);
 				this.dialog = false;

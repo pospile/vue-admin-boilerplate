@@ -22,6 +22,10 @@
         <template v-slot:item.wallet.money="{ item }">
           <span>{{ item.wallet.money }} Kč</span>
         </template>
+        <template v-slot:item.id="{ item }">
+          <v-btn color="error" v-on:click="applyCoupon(item.id)" >KUPONOVKA</v-btn>
+          <v-btn class="ml-2" color="warning" v-on:click="openProfilePage(item.id)" >PROFIL</v-btn>
+        </template>
       </v-data-table>
     </v-card>
     <v-layout class="pt-2">
@@ -66,6 +70,47 @@
         </v-card>
       </v-dialog>
     </v-layout>
+
+    <v-layout class="pt-2">
+      <v-dialog v-model="couponDialog" persistent max-width="800px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Vytvoření uživatele</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field v-model="createUser.fullName" name="displayName" label="Celé jméno*"
+                                hint="Celé jméno uživatele"
+                                required></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="createUser.phoneNumber" label="Telefonní číslo*"
+                                hint="Slouží jako přihlašovací jméno" required></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="createUser.password" label="Heslo*" hint="Přihlašovací heslo uživatele"
+                                type="password"
+                                required></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="4" md="4" sm="12">
+                  <v-text-field v-model="createUser.initialBalance" type="number"
+                                label="Počáteční zůstatek"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+            <small>*povinné pole</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" text @click="createNewUser">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+
   </div>
 </template>
 
@@ -76,6 +121,7 @@ export default {
   name: "Users",
   data: () => ({
     dialog: false,
+    couponDialog: false,
     search: '',
     headers: [
       {
@@ -87,6 +133,7 @@ export default {
       {text: 'Datum založení', value: 'createdAt'},
       {text: 'Telefonní číslo', value: 'phoneNumber'},
       {text: 'Zůstatek', value: 'wallet.money'},
+      {text: 'Kupon', value: 'id'},
     ],
     users: [],
     createUser: {
@@ -112,6 +159,13 @@ export default {
         console.log(e);
       }
     },
+    async applyCoupon(userId) {
+      console.log(userId);
+    },
+    async openProfilePage(userId) {
+      console.log(userId);
+      await this.$router.replace(`/user/profile/${userId}`);
+    }
   }
 }
 </script>

@@ -126,7 +126,7 @@ export default {
       {title: 'Uživatelé', icon: 'mdi-account', link: "/user"},
       {title: 'Sázky', icon: 'mdi-cash-100', link: "/bets"},
       {title: 'Kategorie', icon: 'mdi-file-tree', link: "/category"},
-      {title: 'Resolution centre', icon: 'mdi-selection-ellipse-arrow-inside', link: "/resolution"},
+      {title: 'Kupóny', icon: 'mdi-ticket-percent', link: "/coupon"}
     ],
     select: {}
   }),

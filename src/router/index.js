@@ -56,6 +56,14 @@ const routes = [
 		component: () => import(/* webpackChunkName: "about" */ '../views/Category.vue')
 	},
 	{
+		path: '/coupon',
+		name: 'Coupon',
+		meta: {
+			requiresAuth: true
+		},
+		component: () => import(/* webpackChunkName: "about" */ '../views/Coupouns.vue')
+	},
+	{
 		path: '/login',
 		name: 'Login',
 		// route level code-splitting

@@ -5,7 +5,7 @@ module.exports = {
     "devServer": {
         proxy: {
             "^/": {
-                target: "http://localhost:3001/v1",
+                target: "https://be-2002f-3001.app.zerops.io",
                 changeOrigin: true
             }
         }
