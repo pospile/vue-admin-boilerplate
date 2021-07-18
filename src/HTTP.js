@@ -3,7 +3,7 @@ import * as store from "store2";
 
 console.log(store.get("auth"));
 export const HTTP = axios.create({
-	baseURL: `http://be.zerops/v1`
+	baseURL: `https://be.zerops/v1`
 });
 HTTP.interceptors.request.use((config) => {
 	try {
