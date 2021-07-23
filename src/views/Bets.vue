@@ -19,14 +19,14 @@
 								<td>{{ row.item.betValue }}</td>
 								<td>{{ new Date(row.item.resolveDateTime).toLocaleString() }}</td>
 								<td>{{ row.item.status }}</td>
-								<td v-if='(row.item.betOptions.filter((betOption) => betOption.status === "WON")).length !== 0'>
-									{{
-										(row.item.betOptions.filter((betOption) => betOption.status === "WON"))[0].optionName
-									}}
-								</td>
-								<td v-else>
-									nerozhodnuto
-								</td>
+                <td v-if='(row.item.betOptions.filter((betOption) => betOption.status === "WON")).length !== 0'>
+                  {{
+                    (row.item.betOptions.filter((betOption) => betOption.status === "WON"))[0].optionName
+                  }}
+                </td>
+                <td v-else>
+                  nerozhodnuto
+                </td>
 								<td>
 									<v-btn class="mx-2" color="primary">
 										<router-link

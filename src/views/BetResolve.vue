@@ -20,10 +20,10 @@
 						<v-card-text>
 							<v-container>
 								<span class="subtitle-2">Status: {{ betOption.status }}</span><br>
-								<v-card elevation="5" v-for="user in betOption.users" v-bind:key="user.id" single-line
+								<v-card elevation="5" v-for="betOptionUser in betOption.betOptionUsers" v-bind:key="betOptionUser.id" single-line
 										class="mt-3 pa-3 d-flex justify-md-space-around">
 									<v-icon class="mr-2">mdi-account</v-icon>
-									{{ user.fullName }}
+									{{ betOptionUser.user.fullName }}
 									<v-icon class="ml-auto">mdi-close</v-icon>
 								</v-card>
 							</v-container>
