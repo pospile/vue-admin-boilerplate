@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as store from "store2";
+import router from './router'
 
 console.log(store.get("auth"));
 export const HTTP = axios.create({
@@ -15,18 +16,18 @@ HTTP.interceptors.request.use((config) => {
 		return config;
 	}
 });
+
 HTTP.interceptors.response.use((response) => {
-		console.log(response);
-		if (response.status === 401) {
-			console.log("Error 401");
-			if (this.$router.currentRoute.path !== "/login") {
-				this.$router.push("/login");
-			}
-		}
 		return response;
 	},
 	(error) => {
 		console.log(error);
+		console.log(error.response);
+		if (error.response.status === 401) {
+			if (router.currentRoute.path !== "/login") {
+				router.push("/login");
+			}
+		}
 		return error;
 	});
 

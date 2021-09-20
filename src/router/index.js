@@ -48,6 +48,14 @@ const routes = [
 		component: () => import(/* webpackChunkName: "about" */ '../views/BetResolve.vue')
 	},
 	{
+		path: '/case/:caseId',
+		name: 'Case details',
+		meta: {
+			requiresAuth: true
+		},
+		component: () => import(/* webpackChunkName: "about" */ '../views/CasePage.vue')
+	},
+	{
 		path: '/resolution',
 		name: 'Resolution centre',
 		meta: {
@@ -70,6 +78,14 @@ const routes = [
 			requiresAuth: true
 		},
 		component: () => import(/* webpackChunkName: "about" */ '../views/Coupouns.vue')
+	},
+	{
+		path: '/case',
+		name: 'Case',
+		meta: {
+			requiresAuth: true
+		},
+		component: () => import(/* webpackChunkName: "about" */ '../views/Cases.vue')
 	},
 	{
 		path: '/login',
